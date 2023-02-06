@@ -1,4 +1,4 @@
-package iesmm.pmdm.socialdrivemm;
+package iesmm.pmdm.socialdrivemm.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+
+import iesmm.pmdm.socialdrivemm.R;
 
 public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
