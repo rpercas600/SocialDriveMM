@@ -2,13 +2,14 @@ package iesmm.pmdm.socialdrivemm.model;
 
 public class Marcador {
 
-    private String id, ubi, descripcion, icono;
+    private String id, ubi, descripcion, icono, user;
 
-    public Marcador(String id, String ubi, String descripcion, String icono) {
+    public Marcador(String id, String ubi, String descripcion, String icono, String user) {
         this.id = id;
         this.ubi = ubi;
         this.descripcion = descripcion;
         this.icono = icono;
+        this.user = user;
     }
 
     public String getUbi() {

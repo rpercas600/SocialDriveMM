@@ -32,6 +32,7 @@ public class MarcadorImpl implements DAOMarcador {
                 Marcador inci = new Marcador(sel.getString("NumIncidencia")
                         , sel.getString("CodPartido")
                         , sel.getString("CodJugador")
+                        , sel.getString("Cod")
                         , sel.getString("Tipo"));
 
                 inci.toString();

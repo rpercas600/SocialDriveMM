@@ -36,12 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
                     Usuario usr = new Usuario(txtUser, txtPass);
 
+                    if(txtPass.equals("") && txtUser.equals("")){
+                        Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
+                        startActivity(i);
+                    /*
                     if (usuarioImpl.checkLogin(usr)) {
                         Snackbar.make(view, "Login Correcto, bienvenido " + txtUser, Snackbar.LENGTH_LONG).show();
                         //Lanzo el intent para cambiar de pantalla
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
-
+                     */
                     } else {
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }

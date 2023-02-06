@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class Conexion {
     private static Connection jdbcConnection = null; // Representa una conexión a la BD
-    private final String fileBD = "res/connection.properties";
+    private final String fileBD = "iesmm.pmdm.socialdrivemm/res/connection.properties";
     private String uri;
     private String port;
     private String bd;
@@ -19,7 +19,7 @@ public class Conexion {
     private Conexion() throws IOException, SQLException {
         // 1. Cargar configuración de fichero de propiedades en ruta por defecto
         Properties props = new Properties();
-        props.load(new FileReader("res/connection.properties"));
+        props.load(new FileReader("java/iesmm/pmdm/socialdrivemm/res/connection.properties"));
 
         // 2. Cargar valores de propiedades del fichero
         this.uri = props.getProperty("uri");

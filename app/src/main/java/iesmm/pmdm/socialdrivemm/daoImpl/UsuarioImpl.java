@@ -29,7 +29,7 @@ public class UsuarioImpl implements DAOUsuario {
             ResultSet sel = sqlStatement.executeQuery(sql);
 
             while (sel.next()) {
-                Usuario user = new Usuario(sel.getString("usernamee")
+                Usuario user = new Usuario(sel.getString("username")
                         , sel.getString("password"));
                 if (user.equals(userIn)){
                     flag = true;
@@ -40,7 +40,7 @@ public class UsuarioImpl implements DAOUsuario {
             }
         } catch (SQLException | IOException e) {
             flag = false;
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
         }
 
         return flag;

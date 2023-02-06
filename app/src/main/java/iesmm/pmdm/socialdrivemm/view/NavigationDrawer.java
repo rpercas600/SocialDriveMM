@@ -1,6 +1,5 @@
 package iesmm.pmdm.socialdrivemm.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -36,27 +35,23 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         drawerLayout.addDrawerListener(toggle);
 
         if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_list);
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+            case R.id.nav_list:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit();
                 break;
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AboutFragment()).commit();
-                break;
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
+            case R.id.nav_map:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MapFragment()).commit();
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this,"Logout!",Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
+                getSupportFragmentManager().beginTransaction().replace(R.id.main,new MapFragment()).commit();
                 break;
         }
 
