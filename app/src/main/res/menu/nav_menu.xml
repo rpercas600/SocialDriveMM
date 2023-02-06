@@ -9,19 +9,19 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/nav_home"
-            android:title="Homa"/>
+            android:title="Home"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/nav_settings"
-            android:title="Homa"/>
+            android:title="Settings"/>
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/nav_share"
-            android:title="Homa"/>
+            android:title="Share"/>
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/nav_about"
-            android:title="Homa"/>
+            android:title="About"/>
     </group>
     <item
 
