@@ -1,7 +1,9 @@
 package iesmm.pmdm.socialdrivemm.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -25,20 +27,21 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open_nav,R.string.close_nav);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
+                R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
-
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_list);
+        toggle.syncState();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_view);
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -51,11 +54,21 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this,"Logout!",Toast.LENGTH_LONG).show();
-                getSupportFragmentManager().beginTransaction().replace(R.id.main,new MapFragment()).commit();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
                 break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
-        return false;
+        return true;
     }
+    @Override
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            super.onBackPressed();
+        }
+    }
+
 }
