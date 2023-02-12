@@ -3,7 +3,6 @@ package iesmm.pmdm.socialdrivemm.view;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.ListFragment;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -38,6 +38,8 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         toggle.syncState();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
+            //Intent iList = new Intent(getApplicationContext(), ListActivity.class);
+            //startActivity(iList);
             navigationView.setCheckedItem(R.id.nav_view);
         }
     }
@@ -47,15 +49,15 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.nav_list:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit();
-                break;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
+                               break;
             case R.id.nav_map:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MapFragment()).commit();
-                break;
+                Intent iMap = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(iMap);                break;
             case R.id.nav_logout:
                 Toast.makeText(this,"Logout!",Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                Intent iLogin = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(iLogin);
                 break;
         }
 
