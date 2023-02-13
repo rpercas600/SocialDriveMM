@@ -84,17 +84,18 @@ public class GPSUtils {
                 longitude = String.valueOf(longi);
 
             } else {
-                Toast.makeText(activity, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "No se pudo obtener la localización, pruebe activando y desactivando la función de GPS.", Toast.LENGTH_SHORT).show();
+
             }
         }
 
     }
 
-    private void gpsEnable(final Activity activity) {
+    static void gpsEnable(final Activity activity) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setMessage("El GPS está desactivado, ¿Desea activarlo?").setCancelable(false).setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 activity.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));

@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS socialdrivemm;
+CREATE DATABASE socialdrivemm CHARACTER SET utf8mb4;
+USE socialdrivemm;
+
 CREATE TABLE `marcador` (
   `id` int(5) NOT NULL,
   `ubi` varchar(20) NOT NULL,

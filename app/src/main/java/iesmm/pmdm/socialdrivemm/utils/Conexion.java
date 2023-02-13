@@ -10,11 +10,11 @@ import java.util.Properties;
 public class Conexion {
     private static Connection jdbcConnection = null; // Representa una conexión a la BD
     //private final String fileBD = "app/src/main/res/connection.properties";
-    private final String uri = "jdbc:mysql://192.168.1.85";
+    private final String uri = "jdbc:mysql://192.168.1.5";
     private final String port = "3306";
-    private final String bd = "socialdrive";
+    private final String bd = "socialdrivemm";
     private final String username = "root";
-    private final String password = "dammm";
+    private final String password = "3081";
 
 
 

@@ -18,6 +18,7 @@ import iesmm.pmdm.socialdrivemm.model.Usuario;
 public class Login extends AppCompatActivity {
 
     protected Usuario usr;
+    protected Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class Login extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (view.getId() == R.id.boton_iniciar_sesion) {
 
                     //Comprobar lo introducido en los campos
@@ -39,9 +41,13 @@ public class Login extends AppCompatActivity {
                     usr = new Usuario(txtUser, txtPass);
 
 
-                    if(txtPass.equals("") && txtUser.equals("")) {
+                    if(true) {
+                        bundle.putString("user", usr.getUser());
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
+
+                    }else{
+                        Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }
                     /*
                     if (usuarioImpl.checkLogin(usr)) {

@@ -1,5 +1,7 @@
 package iesmm.pmdm.socialdrivemm.view;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,11 +10,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +40,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import iesmm.pmdm.socialdrivemm.R;
 import iesmm.pmdm.socialdrivemm.dao.DAOMarcador;
@@ -47,6 +59,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
     private TextView txtDes;
     private LinearLayout ln;
     private String userLogged;
+    AlertDialog alert = null;
+    LocationManager locationManager;
 
     private MarcadorImpl marcador;
 
@@ -68,15 +82,25 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
 
             mMap = googleMap;
 
+            locationManager = (LocationManager) requireContext().getSystemService(LOCATION_SERVICE);
+            if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                GPSUtils.gpsEnable(getActivity());
+            }else{
             GPSUtils.getInstance().findDeviceLocation(getActivity());
+            try {
+                LatLng ubicacionActual = new LatLng(Double.parseDouble(GPSUtils.getLatitude()),Double.parseDouble(GPSUtils.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(ubicacionActual).title("Ubicacion actual"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionActual));
+            }catch (NullPointerException e){
 
-            LatLng ubicacionActual = new LatLng(Double.parseDouble(GPSUtils.getLatitude()),Double.parseDouble(GPSUtils.getLongitude()));
-            googleMap.addMarker(new MarkerOptions().position(ubicacionActual).title("Ubicacion actual"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionActual));
+            }
+            }
+
 
         }
 
     };
+
 
     @Nullable
     @Override
@@ -87,6 +111,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
         client = LocationServices
                 .getFusedLocationProviderClient(
                         getActivity());
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -96,8 +121,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
 
         txtDes = view.findViewById(R.id.descripcion);
 
-        //Recuperar el usuario del loggin
-        userLogged = new Login().usr.getUser();
+
 
 
         SupportMapFragment mapFragment =
@@ -168,5 +192,65 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
 
             Toast.makeText(this.getContext(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
         }
+    }
+    class Async extends AsyncTask<Void, Void, Void> {
+
+
+
+        String records = "",error="";
+
+        @Override
+
+        protected Void doInBackground(Void... voids) {
+
+            try
+
+            {
+
+                Class.forName("com.mysql.jdbc.Driver");
+
+                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.56.5:3306/socialdrivemm", "root", "3081");
+
+                Statement statement = connection.createStatement();
+
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM test");
+
+                while(resultSet.next()) {
+
+                    records += resultSet.getString(1) + " " + resultSet.getString(2) + "\n";
+
+                }
+
+            }
+
+            catch(Exception e)
+
+            {
+
+                error = e.toString();
+
+            }
+
+            return null;
+
+        }
+
+
+
+        @Override
+
+        protected void onPostExecute(Void aVoid) {
+
+           /* text.setText(records);
+
+            if(error != "")
+
+                errorText.setText(error);
+
+            super.onPostExecute(aVoid);
+*/
+        }
+
+
     }
 }

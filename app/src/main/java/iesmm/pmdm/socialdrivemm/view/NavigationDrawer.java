@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -38,6 +39,17 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ItemFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_view);
+        }
+
+        //Recuperar el usuario del loggin
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+
+            TextView txt = this.findViewById(R.id.txtUsuario);
+
+            txt.setText("Bienvenido " + bundle.getString("user"));
+        } else {
+
         }
     }
 
