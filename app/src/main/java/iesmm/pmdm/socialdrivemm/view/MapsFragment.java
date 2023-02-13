@@ -44,16 +44,12 @@ import iesmm.pmdm.socialdrivemm.R;
 import iesmm.pmdm.socialdrivemm.daoImpl.MarcadorImpl;
 import iesmm.pmdm.socialdrivemm.model.Marcador;
 
-public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListener {
+public class MapsFragment extends Fragment {
 
     AlertDialog alert = null;
     LocationManager locationManager;
     FusedLocationProviderClient client;
     private GoogleMap mMap;
-    private TextView txtDes;
-    private LinearLayout ln;
-    private String userLogged;
-    private MarcadorImpl marcador;
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -83,25 +79,102 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 10));
 
                 } catch (NullPointerException e) {
-
+                    Toast.makeText(getActivity(), "Error de gps", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-
     };
-
+    private TextView txtDes;
+    private LinearLayout ln;
+    private String userLogged;
+    private MarcadorImpl marcador;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        SupportMapFragment supportMapFragment = (SupportMapFragment)
+                getChildFragmentManager().findFragmentById(R.id.map);
 
         client = LocationServices
-                .getFusedLocationProviderClient(
-                        getActivity());
+                .getFusedLocationProviderClient(getActivity());
 
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(@NonNull LatLng latLng) {
+
+                        //Geocoding de la posicion
+                        Geocoder geocoder = new Geocoder(getContext());
+
+                        //1. Obtener las posiciones respecto a la direccion marcada
+                        try {
+                            List<Address> direcciones = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+
+
+                            //2. Sacar los datos
+                            Address direccion = direcciones.get(0);
+
+                            Double lat = direccion.getLatitude();
+                            Double lon = direccion.getLongitude();
+                            String ubi = lat + " / " + lon;
+                            String via = direccion.getAddressLine(0);
+
+
+                            //alert dialog que preguntará descripción
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                            LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+                            builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
+                                    .setTitle(via);
+
+
+                            builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    String des = String.valueOf(txtDes.getText());
+
+                                    Marker mark = mMap.addMarker(
+                                            new MarkerOptions().position(new LatLng(lat, lon))
+                                                    .title(des));
+
+                                    mark.showInfoWindow();
+
+                                    Marcador markOb = new Marcador(
+                                            String.valueOf(LocalDateTime.now()),
+                                            ubi, des, via, userLogged);
+
+                                    marcador.insert(markOb);
+                                }
+                            });
+
+                            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+
+                            Toast.makeText(getActivity(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+        return view;
     }
 
     @Override
@@ -118,73 +191,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
         }
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onMapClick(@NonNull LatLng latLng) {
-
-        //Geocoding de la posicion
-        Geocoder geocoder = new Geocoder(this.getContext());
-
-        //1. Obtener las posiciones respecto a la direccion marcada
-        try {
-            List<Address> direcciones = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-
-
-            //2. Sacar los datos
-            Address direccion = direcciones.get(0);
-
-            Double lat = direccion.getLatitude();
-            Double lon = direccion.getLongitude();
-            String ubi = lat + " / " + lon;
-            String via = direccion.getAddressLine(0);
-
-
-            //alert dialog que preguntará descripción
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-            LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-            builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
-                    .setTitle(via);
-
-
-            builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-
-                    String des = String.valueOf(txtDes.getText());
-
-                    Marker mark = mMap.addMarker(
-                            new MarkerOptions().position(new LatLng(lat, lon))
-                                    .title(des));
-
-                    mark.showInfoWindow();
-
-                    Marcador markOb = new Marcador(
-                            String.valueOf(LocalDateTime.now()),
-                            ubi, des, via, userLogged);
-
-                    marcador.insert(markOb);
-                }
-            });
-
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            Toast.makeText(this.getContext(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     class Async extends AsyncTask<Void, Void, Void> {
-
 
         String records = "", error = "";
 
@@ -193,31 +200,20 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
         protected Void doInBackground(Void... voids) {
 
             try {
-
                 Class.forName("com.mysql.jdbc.Driver");
 
                 Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.56.5:3306/socialdrivemm", "root", "3081");
-
                 Statement statement = connection.createStatement();
-
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM test");
 
                 while (resultSet.next()) {
-
                     records += resultSet.getString(1) + " " + resultSet.getString(2) + "\n";
-
                 }
-
             } catch (Exception e) {
-
                 error = e.toString();
-
             }
-
             return null;
-
         }
-
 
         @Override
 
