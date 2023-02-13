@@ -46,7 +46,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         if (bundle != null) {
 
             TextView txt = this.findViewById(R.id.txtUsuario);
-
+            System.out.println(bundle.getString("user")+"1");
             txt.setText("Bienvenido " + bundle.getString("user"));
         } else {
 
