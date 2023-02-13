@@ -46,7 +46,12 @@ public class Login extends AppCompatActivity {
                         //Lanzo el intent para cambiar de pantalla
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
-
+                        System.out.println(txtUser);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("user", "usuario");
+                        // set Fragmentclass Arguments
+                        MapsFragment fragobj = new MapsFragment();
+                        fragobj.setArguments(bundle);
                     } else {
 
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();

@@ -93,6 +93,7 @@ public class MapsFragment extends Fragment {
 
         client = LocationServices
                 .getFusedLocationProviderClient(getActivity());
+
 /*      Bundle mBundle = new Bundle();
         Bundle extras = getActivity().getIntent().getExtras();
         String foo = extras.getString("FOO");

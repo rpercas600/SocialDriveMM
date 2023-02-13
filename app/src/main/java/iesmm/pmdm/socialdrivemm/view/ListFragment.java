@@ -75,7 +75,7 @@ public class ListFragment extends Fragment {
     }
     private void addItemsInListView(ArrayList marcadores) {
         //Localizar el listview en el layout
-        ListView lista = getActivity().findViewById(R.id.item_number);
+        ListView lista = getActivity().findViewById(R.id.container);
         marcadores.add(new Marcador("a","a","a","a","a"));
         System.out.println(marcadores);
         //Creamos adaptador de datos y vinculamos los datos que vamos a presentar en el listview
