@@ -1,16 +1,33 @@
 package iesmm.pmdm.socialdrivemm.model;
 
-public class Marcador {
+public class
+Marcador {
 
-    private String id, ubi, descripcion, icono, user;
+    private int id;
+    private String hora, ubi, descripcion, via, user;
 
-    public Marcador(String id, String ubi, String descripcion, String icono, String user) {
+
+    public Marcador(int id, String hora, String ubi, String descripcion, String via, String user) {
         this.id = id;
+        this.hora = hora;
+
         this.ubi = ubi;
         this.descripcion = descripcion;
-        this.icono = icono;
+        this.via = via;
         this.user = user;
     }
+
+    public Marcador(String hora, String ubi, String descripcion, String via, String user) {
+        this.hora = hora;
+        this.ubi = ubi;
+        this.descripcion = descripcion;
+        this.via = via;
+        this.user = user;
+    }
+
+    public int getId() { return id; }
+
+    public String getHora() { return hora; }
 
     public String getUbi() {
         return ubi;
@@ -20,11 +37,15 @@ public class Marcador {
         return descripcion;
     }
 
-    public String getIcono() {
-        return icono;
+    public String getVia() {
+        return via;
     }
 
+    public String getUser() { return user; }
+
+    //hace falta el id en el objeto?
+    /*
     public String getId() {
         return id;
-    }
+    } */
 }

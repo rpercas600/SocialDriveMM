@@ -1,4 +1,5 @@
 package iesmm.pmdm.socialdrivemm.view;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +17,7 @@ import androidx.core.app.ActivityCompat;
 public class GPSUtils {
 
     private static final int REQUEST_LOCATION = 1;
-    private static GPSUtils instance = new GPSUtils();
+    private static final GPSUtils instance = new GPSUtils();
     private LocationManager locationManager;
     private static String latitude;
     private static String longitude;
@@ -51,10 +52,10 @@ public class GPSUtils {
     private void getLocation(Activity activity) {
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity,
-
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+            ActivityCompat.requestPermissions(activity, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
         } else {
             Location LocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -114,7 +115,7 @@ public class GPSUtils {
     }
 
     public void setLatitude(String latitude) {
-        this.latitude = latitude;
+        GPSUtils.latitude = latitude;
     }
 
     public static String getLongitude() {
@@ -122,7 +123,7 @@ public class GPSUtils {
     }
 
     public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        GPSUtils.longitude = longitude;
     }
 
 

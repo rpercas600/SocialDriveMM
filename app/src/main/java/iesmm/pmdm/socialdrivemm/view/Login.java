@@ -17,6 +17,8 @@ import iesmm.pmdm.socialdrivemm.model.Usuario;
 
 public class Login extends AppCompatActivity {
 
+    protected Usuario usr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,21 +36,25 @@ public class Login extends AppCompatActivity {
                     String txtUser = ((TextView) findViewById(R.id.input_usuario)).getText().toString();
                     String txtPass = ((TextView) findViewById(R.id.input_contrasena)).getText().toString();
 
-                    Usuario usr = new Usuario(txtUser, txtPass);
+                    usr = new Usuario(txtUser, txtPass);
 
-                    if(txtPass.equals("") && txtUser.equals("")){
+
+                    if(txtPass.equals("") && txtUser.equals("")) {
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
+                    }
                     /*
                     if (usuarioImpl.checkLogin(usr)) {
+
                         Snackbar.make(view, "Login Correcto, bienvenido " + txtUser, Snackbar.LENGTH_LONG).show();
                         //Lanzo el intent para cambiar de pantalla
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
-                     */
+
                     } else {
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }
+                     */
                 }
             }
         });
