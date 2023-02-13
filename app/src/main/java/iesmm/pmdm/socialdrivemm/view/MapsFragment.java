@@ -2,13 +2,24 @@ package iesmm.pmdm.socialdrivemm.view;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
+
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -32,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -39,22 +46,27 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import iesmm.pmdm.socialdrivemm.R;
+import iesmm.pmdm.socialdrivemm.dao.DAOMarcador;
 import iesmm.pmdm.socialdrivemm.daoImpl.MarcadorImpl;
 import iesmm.pmdm.socialdrivemm.model.Marcador;
 
 public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListener {
 
-    AlertDialog alert = null;
-    LocationManager locationManager;
-    FusedLocationProviderClient client;
     private GoogleMap mMap;
     private TextView txtDes;
     private LinearLayout ln;
     private String userLogged;
+    AlertDialog alert = null;
+    LocationManager locationManager;
+
     private MarcadorImpl marcador;
-    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+    FusedLocationProviderClient client;
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
          * Manipulates the map once available.
@@ -71,21 +83,20 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
             mMap = googleMap;
 
             locationManager = (LocationManager) requireContext().getSystemService(LOCATION_SERVICE);
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                 GPSUtils.gpsEnable(getActivity());
-            } else {
-                GPSUtils.getInstance().findDeviceLocation(getActivity());
-                try {
-                    LatLng ubicacionActual = new LatLng(Double.parseDouble(GPSUtils.getLatitude()), Double.parseDouble(GPSUtils.getLongitude()));
-                    googleMap.addMarker(new MarkerOptions().position(ubicacionActual).title("Ubicacion actual"));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionActual));
+            }else{
+            GPSUtils.getInstance().findDeviceLocation(getActivity());
+            try {
+                LatLng ubicacionActual = new LatLng(Double.parseDouble(GPSUtils.getLatitude()),Double.parseDouble(GPSUtils.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(ubicacionActual).title("Ubicacion actual"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionActual));
+            }catch (NullPointerException e){
 
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 10));
-
-                } catch (NullPointerException e) {
-
-                }
             }
+            }
+
+
         }
 
     };
@@ -101,6 +112,14 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
                 .getFusedLocationProviderClient(
                         getActivity());
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+
+           userLogged = bundle.getString("user");
+            System.out.println(userLogged+"1");
+        } else {
+
+        }
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -109,6 +128,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
         super.onViewCreated(view, savedInstanceState);
 
         txtDes = view.findViewById(R.id.descripcion);
+
+
 
 
         SupportMapFragment mapFragment =
@@ -146,7 +167,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
             LayoutInflater inflater = requireActivity().getLayoutInflater();
 
             builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
-                    .setTitle(via);
+                .setTitle(via);
 
 
             builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
@@ -157,8 +178,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
                     Marker mark = mMap.addMarker(
                             new MarkerOptions().position(new LatLng(lat, lon))
                                     .title(des));
-
-                    mark.showInfoWindow();
 
                     Marcador markOb = new Marcador(
                             String.valueOf(LocalDateTime.now()),
@@ -182,17 +201,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
             Toast.makeText(this.getContext(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
         }
     }
-
     class Async extends AsyncTask<Void, Void, Void> {
 
 
-        String records = "", error = "";
+
+        String records = "",error="";
 
         @Override
 
         protected Void doInBackground(Void... voids) {
 
-            try {
+            try
+
+            {
 
                 Class.forName("com.mysql.jdbc.Driver");
 
@@ -202,13 +223,17 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
 
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM test");
 
-                while (resultSet.next()) {
+                while(resultSet.next()) {
 
                     records += resultSet.getString(1) + " " + resultSet.getString(2) + "\n";
 
                 }
 
-            } catch (Exception e) {
+            }
+
+            catch(Exception e)
+
+            {
 
                 error = e.toString();
 
@@ -217,6 +242,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
             return null;
 
         }
+
 
 
         @Override

@@ -42,7 +42,8 @@ public class Login extends AppCompatActivity {
 
 
                     if(true) {
-                        bundle.putString("user", usr.getUser());
+                        bundle.putString("user", txtUser);
+                        System.out.println(txtUser);
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);
 
