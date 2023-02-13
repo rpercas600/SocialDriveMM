@@ -37,7 +37,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ItemFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
 
             navigationView.setCheckedItem(R.id.nav_view);
         }
@@ -59,7 +59,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.nav_list:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ItemFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
 
                                break;
             case R.id.nav_map:
