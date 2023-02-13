@@ -1,5 +1,6 @@
 package iesmm.pmdm.socialdrivemm.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,10 +23,22 @@ import iesmm.pmdm.socialdrivemm.R;
 
 public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
+    private TextView txtUsr;
+    @SuppressLint("MissingInflatedId")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer);
+
+        //nombre desde el otro activity
+        txtUsr = findViewById(R.id.txtHeaderUsr);
+
+        Bundle bundle = getIntent().getExtras();
+        String user = bundle.getString("usr");
+
+        txtUsr.setText(user);
+
+        //Toolbar
 
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
@@ -40,17 +53,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListFragment()).commit();
 
             navigationView.setCheckedItem(R.id.nav_view);
-        }
-
-        //Recuperar el usuario del loggin
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-
-            TextView txt = this.findViewById(R.id.txtUsuario);
-            System.out.println(bundle.getString("user")+"1");
-            txt.setText("Bienvenido " + bundle.getString("user"));
-        } else {
-
         }
     }
 

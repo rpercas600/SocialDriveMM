@@ -14,9 +14,9 @@ import iesmm.pmdm.socialdrivemm.utils.Conexion;
 
 public class UsuarioImpl implements DAOUsuario {
 
-
     @Override
     public boolean checkLogin(Usuario userIn) {
+
         boolean flag = false;
         Connection con = null;
 
@@ -45,8 +45,6 @@ public class UsuarioImpl implements DAOUsuario {
             System.out.println("no conexion");
             System.out.println(new RuntimeException(e));
         }
-
         return flag;
-
     }
 }

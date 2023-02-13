@@ -40,15 +40,21 @@ public class Login extends AppCompatActivity {
 
                     usr = new Usuario(txtUser, txtPass);
 
-                    if (true) {
+                    if (usuarioImpl.checkLogin(usr)) {
 
                         Snackbar.make(view, "Login Correcto, bienvenido " + txtUser, Snackbar.LENGTH_LONG).show();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("user", usr.getUser());
+
                         //Lanzo el intent para cambiar de pantalla
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
+
+                        i.putExtras(bundle);
+
                         startActivity(i);
 
                     } else {
-
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }
                 }

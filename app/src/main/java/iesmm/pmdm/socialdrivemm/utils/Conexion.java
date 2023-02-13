@@ -1,13 +1,14 @@
 package iesmm.pmdm.socialdrivemm.utils;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
 
-    private final String uri = "jdbc:mysql://192.168.10.214";
+    private final String uri = "jdbc:mysql://192.168.1.85";
     private final String port = "3306";
     private final String bd = "socialdrivemm";
     private final String username = "dam";
@@ -17,17 +18,16 @@ public class Conexion {
 
     private Conexion() throws SQLException {
 
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
-
-            jdbcConnection = DriverManager.getConnection(uri + ":" + port + "/"+ bd, username, password);
-            //jdbcConnection = DriverManager.getConnection("jdbc:mysql://192.168.1.2:3306/android", "andro", "andro");
-
-
         } catch (ClassNotFoundException e) {
-            System.out.println("Error de conexion");
-            System.out.println(e);
+            e.printStackTrace();
         }
+
+        jdbcConnection = DriverManager.getConnection(uri + ":" + port + "/"+ bd, username, password);
+
+
     }
 
     /**
@@ -36,7 +36,7 @@ public class Conexion {
      * @return la conexión de la base de datos.
      * @throws SQLException devuelve una excepción si no se puede obtener la conexión.
      */
-    public static Connection getConnection() throws SQLException, IOException {
+    public static java.sql.Connection getConnection() throws SQLException, IOException {
         if (jdbcConnection == null || jdbcConnection.isClosed())
             new Conexion();
 
