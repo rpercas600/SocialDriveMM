@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-    private static Connection jdbcConnection = null;
 
     private final String uri = "jdbc:mysql://192.168.10.214";
     private final String port = "3306";
@@ -14,12 +13,16 @@ public class Conexion {
     private final String username = "dam";
     private final String password = "dammm";
 
+    private static Connection jdbcConnection;
+
     private Conexion() throws SQLException {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
             jdbcConnection = DriverManager.getConnection(uri + ":" + port + "/"+ bd, username, password);
+            //jdbcConnection = DriverManager.getConnection("jdbc:mysql://192.168.1.2:3306/android", "andro", "andro");
+
 
         } catch (ClassNotFoundException e) {
             System.out.println("Error de conexion");
