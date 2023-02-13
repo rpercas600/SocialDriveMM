@@ -44,7 +44,7 @@ import iesmm.pmdm.socialdrivemm.R;
 import iesmm.pmdm.socialdrivemm.daoImpl.MarcadorImpl;
 import iesmm.pmdm.socialdrivemm.model.Marcador;
 
-public class MapsFragment extends Fragment{
+public class MapsFragment extends Fragment {
 
     AlertDialog alert = null;
     LocationManager locationManager;
@@ -110,74 +110,70 @@ public class MapsFragment extends Fragment{
                     @Override
                     public void onMapClick(@NonNull LatLng latLng) {
 
-                            //Geocoding de la posicion
-                            Geocoder geocoder = new Geocoder(getContext());
+                        //Geocoding de la posicion
+                        Geocoder geocoder = new Geocoder(getContext());
 
-                            //1. Obtener las posiciones respecto a la direccion marcada
-                            try {
-                                List<Address> direcciones = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-
-
-                                //2. Sacar los datos
-                                Address direccion = direcciones.get(0);
-
-                                Double lat = direccion.getLatitude();
-                                Double lon = direccion.getLongitude();
-                                String ubi = lat + " / " + lon;
-                                String via = direccion.getAddressLine(0);
+                        //1. Obtener las posiciones respecto a la direccion marcada
+                        try {
+                            List<Address> direcciones = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
 
 
-                                //alert dialog que preguntará descripción
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            //2. Sacar los datos
+                            Address direccion = direcciones.get(0);
 
-                                LayoutInflater inflater = requireActivity().getLayoutInflater();
+                            Double lat = direccion.getLatitude();
+                            Double lon = direccion.getLongitude();
+                            String ubi = lat + " / " + lon;
+                            String via = direccion.getAddressLine(0);
 
-                                builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
-                                        .setTitle(via);
+
+                            //alert dialog que preguntará descripción
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                            LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+                            builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
+                                    .setTitle(via);
 
 
+                            builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                public void onClick(DialogInterface dialog, int id) {
 
-                                builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                                    @RequiresApi(api = Build.VERSION_CODES.O)
-                                    public void onClick(DialogInterface dialog, int id) {
+                                    String des = String.valueOf(txtDes.getText());
 
-                                        String des = String.valueOf(txtDes.getText());
+                                    Marker mark = mMap.addMarker(
+                                            new MarkerOptions().position(new LatLng(lat, lon))
+                                                    .title(des));
 
-                                        Marker mark = mMap.addMarker(
-                                                new MarkerOptions().position(new LatLng(lat, lon))
-                                                        .title(des));
+                                    mark.showInfoWindow();
 
-                                        mark.showInfoWindow();
+                                    Marcador markOb = new Marcador(
+                                            String.valueOf(LocalDateTime.now()),
+                                            ubi, des, via, userLogged);
 
-                                        Marcador markOb = new Marcador(
-                                                String.valueOf(LocalDateTime.now()),
-                                                ubi, des, via, userLogged);
+                                    marcador.insert(markOb);
+                                }
+                            });
 
-                                        marcador.insert(markOb);
-                                    }
-                                });
+                            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
 
-                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
 
-                            } catch (IOException e) {
-                                e.printStackTrace();
-
-                                Toast.makeText(getActivity(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
-                            }
-
+                            Toast.makeText(getActivity(), "No se ha indicado una posicion correcta", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
             }
         });
-
-
         return view;
     }
 
