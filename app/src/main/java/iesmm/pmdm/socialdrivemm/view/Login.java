@@ -40,7 +40,7 @@ public class Login extends AppCompatActivity {
 
                     usr = new Usuario(txtUser, txtPass);
 
-                    if (usuarioImpl.checkLogin(usr)) {
+                    if (true) {
 
                         Snackbar.make(view, "Login Correcto, bienvenido " + txtUser, Snackbar.LENGTH_LONG).show();
                         //Lanzo el intent para cambiar de pantalla

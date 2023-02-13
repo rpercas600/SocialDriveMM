@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import iesmm.pmdm.socialdrivemm.databinding.FragmentItemBinding;
 import iesmm.pmdm.socialdrivemm.view.placeholder.PlaceholderContent.PlaceholderItem;
-//import iesmm.pmdm.socialdrivemm.view.databinding.FragmentItemBinding;
+
 
 import java.util.List;
 

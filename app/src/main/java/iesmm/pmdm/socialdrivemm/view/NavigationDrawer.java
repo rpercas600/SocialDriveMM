@@ -38,6 +38,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         toggle.syncState();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ItemFragment()).commit();
+
             navigationView.setCheckedItem(R.id.nav_view);
         }
 
@@ -59,6 +60,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         switch(item.getItemId()){
             case R.id.nav_list:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ItemFragment()).commit();
+
                                break;
             case R.id.nav_map:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapsFragment()).commit();
