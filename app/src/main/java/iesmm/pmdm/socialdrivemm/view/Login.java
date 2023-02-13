@@ -18,7 +18,6 @@ import iesmm.pmdm.socialdrivemm.model.Usuario;
 public class Login extends AppCompatActivity {
 
     protected Usuario usr;
-    protected Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +51,12 @@ public class Login extends AppCompatActivity {
 
                         i.putExtras(bundle);
 
-                        startActivity(i);
+
                         System.out.println(txtUser);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("user", "usuario");
                         // set Fragmentclass Arguments
                         MapsFragment fragobj = new MapsFragment();
                         fragobj.setArguments(bundle);
+                        startActivity(i);
                     } else {
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }
