@@ -91,6 +91,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMapClickListen
                 LatLng ubicacionActual = new LatLng(Double.parseDouble(GPSUtils.getLatitude()),Double.parseDouble(GPSUtils.getLongitude()));
                 googleMap.addMarker(new MarkerOptions().position(ubicacionActual).title("Ubicacion actual"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionActual));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual,10));
             }catch (NullPointerException e){
 
             }

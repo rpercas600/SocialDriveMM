@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iesmm.pmdm.socialdrivemm.model.Marcador;
-
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
