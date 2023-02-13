@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,7 +43,14 @@ public class Login extends AppCompatActivity {
 
 
                     if(true) {
-                        bundle.putString("user", txtUser);
+                        MapsFragment fragment = new MapsFragment(); // replace your custom fragment class
+                        Bundle bundle = new Bundle();
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        bundle.putString("user",txtUser); // use as per your need
+                        fragment.setArguments(bundle);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.replace(R.id.input_usuario,fragment);
+                        fragmentTransaction.commit();
                         System.out.println(txtUser);
                         Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
                         startActivity(i);

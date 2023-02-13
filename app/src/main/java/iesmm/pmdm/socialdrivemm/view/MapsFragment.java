@@ -101,6 +101,12 @@ public class MapsFragment extends Fragment {
 
         client = LocationServices
                 .getFusedLocationProviderClient(getActivity());
+/*        Bundle mBundle = new Bundle();
+        Bundle extras = getActivity().getIntent().getExtras();
+        String foo = extras.getString("FOO");
+        //mBundle = getArguments();
+        //mBundle.getString("user");
+        System.out.println(foo);*/
 
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -152,7 +158,7 @@ public class MapsFragment extends Fragment {
                                             String.valueOf(LocalDateTime.now()),
                                             ubi, des, via, userLogged);
 
-                                    marcador.insert(markOb);
+                                    //marcador.insert(markOb);
                                 }
                             });
 
