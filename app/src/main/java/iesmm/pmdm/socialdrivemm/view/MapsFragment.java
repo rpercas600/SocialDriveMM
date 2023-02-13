@@ -49,18 +49,10 @@ public class MapsFragment extends Fragment {
     AlertDialog alert = null;
     LocationManager locationManager;
     FusedLocationProviderClient client;
+
     private GoogleMap mMap;
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
@@ -101,7 +93,7 @@ public class MapsFragment extends Fragment {
 
         client = LocationServices
                 .getFusedLocationProviderClient(getActivity());
-/*        Bundle mBundle = new Bundle();
+/*      Bundle mBundle = new Bundle();
         Bundle extras = getActivity().getIntent().getExtras();
         String foo = extras.getString("FOO");
         //mBundle = getArguments();
@@ -141,7 +133,6 @@ public class MapsFragment extends Fragment {
                             builder.setView(inflater.inflate(R.layout.marcador_alertdialog, null))
                                     .setTitle(via);
 
-
                             builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                                 @RequiresApi(api = Build.VERSION_CODES.O)
                                 public void onClick(DialogInterface dialog, int id) {
@@ -158,7 +149,7 @@ public class MapsFragment extends Fragment {
                                             String.valueOf(LocalDateTime.now()),
                                             ubi, des, via, userLogged);
 
-                                    //marcador.insert(markOb);
+                                    marcador.insert(markOb);
                                 }
                             });
 
@@ -235,6 +226,19 @@ public class MapsFragment extends Fragment {
 */
         }
 
+
+        private void actualizarMarcadores(){
+
+            for (Marcador obj: marcador.listarMacadores()) {
+
+                String[] ubi = obj.getUbi().split("/");
+
+                Marker mark = mMap.addMarker(
+                        new MarkerOptions().position(new LatLng(Double.valueOf(ubi[0]), Double.valueOf(ubi[1])))
+                                .title(obj.getDescripcion()));
+
+            }
+        }
 
     }
 }
