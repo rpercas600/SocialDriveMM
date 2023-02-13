@@ -40,16 +40,6 @@ public class Login extends AppCompatActivity {
 
                     usr = new Usuario(txtUser, txtPass);
 
-
-                    if(true) {
-                        bundle.putString("user", usr.getUser());
-                        Intent i = new Intent(getApplicationContext(), NavigationDrawer.class);
-                        startActivity(i);
-
-                    }else{
-                        Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
-                    }
-                    /*
                     if (usuarioImpl.checkLogin(usr)) {
 
                         Snackbar.make(view, "Login Correcto, bienvenido " + txtUser, Snackbar.LENGTH_LONG).show();
@@ -58,9 +48,9 @@ public class Login extends AppCompatActivity {
                         startActivity(i);
 
                     } else {
+
                         Snackbar.make(view, "Error en acceso, datos incorrectos", Snackbar.LENGTH_LONG).show();
                     }
-                     */
                 }
             }
         });

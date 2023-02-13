@@ -152,7 +152,7 @@ public class MapsFragment extends Fragment {
                                             String.valueOf(LocalDateTime.now()),
                                             ubi, des, via, userLogged);
 
-                                    marcador.insert(markOb);
+                                    //marcador.insert(markOb);
                                 }
                             });
 

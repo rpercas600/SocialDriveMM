@@ -10,7 +10,6 @@ Marcador {
     public Marcador(int id, String hora, String ubi, String descripcion, String via, String user) {
         this.id = id;
         this.hora = hora;
-
         this.ubi = ubi;
         this.descripcion = descripcion;
         this.via = via;

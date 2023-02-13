@@ -57,7 +57,7 @@ public class MarcadorImpl implements DAOMarcador {
 
         try {
             Connection con = Conexion.getConnection();
-            String sql = "INSERT INTO marcador (hora, ubi, descripcion, icono, user) values(?,?,?,?,?)";
+            String sql = "INSERT INTO marcador (hora, ubi, descripcion, via, user) values(?,?,?,?,?)";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             //Add Parameters

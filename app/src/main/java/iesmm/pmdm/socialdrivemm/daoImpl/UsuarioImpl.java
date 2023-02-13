@@ -4,10 +4,10 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 
 import iesmm.pmdm.socialdrivemm.dao.DAOUsuario;
 import iesmm.pmdm.socialdrivemm.model.Usuario;
@@ -16,24 +16,23 @@ import iesmm.pmdm.socialdrivemm.utils.Conexion;
 public class UsuarioImpl implements DAOUsuario {
 
 
+
     @Override
     public boolean checkLogin(Usuario userIn) {
-        /*boolean flag = false;
-        Connection con = null;
-
+        boolean flag = false;
+        Connection c;
 
         String sql = "SELECT * FROM usuario";
 
         try {
 
-            con = Conexion.getConnection();
+            c = Conexion.getConnection();
 
-            Statement sqlStatement = con.createStatement();
-            ResultSet sel = sqlStatement.executeQuery(sql);
+            Statement sqlStatement = c.createStatement();
+            ResultSet set = sqlStatement.executeQuery(sql);
 
-            while (sel.next()) {
-                Usuario user = new Usuario(sel.getString("user")
-                        , sel.getString("pass"));
+            while (set.next()) {
+                Usuario user = new Usuario(set.getString("user"), set.getString("pass"));
                 if (user.equals(userIn)){
                     flag = true;
                     break;
@@ -44,10 +43,11 @@ public class UsuarioImpl implements DAOUsuario {
         } catch (SQLException | IOException e) {
             flag = false;
             System.out.println("no conexion");
-            System.out.println(new RuntimeException(e));
+            System.out.println(e);
         }
 
-        return flag;*/
+        return flag;
+        /*
         boolean flag = false;
         try
 
@@ -83,6 +83,6 @@ public class UsuarioImpl implements DAOUsuario {
             String error = e.toString();
 
         }
-        return flag;
+        return flag;*/
     }
 }

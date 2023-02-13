@@ -4,9 +4,10 @@ USE socialdrivemm;
 
 CREATE TABLE `marcador` (
   `id` int(5) NOT NULL,
+  `hora` varchar(20) NOT NULL,
   `ubi` varchar(20) NOT NULL,
   `descripcion` varchar(20) NOT NULL,
-  `icono` varchar(10) NOT NULL,
+  `via` varchar(10) NOT NULL,
   `user` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
